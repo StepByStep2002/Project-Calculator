@@ -111,7 +111,7 @@ function resultOnOperator(){
     if(secondNumber){
         firstNumber = Number(firstNumber);
         secondNumber = Number(secondNumber);
-        firstNumber = (operate(firstNumber, operator, secondNumber));
+        firstNumber = Math.round(operate(firstNumber, operator, secondNumber) * 1000)/1000;
         console.log(firstNumber);
         secondNumber = '';
         divFirstNumber.textContent = firstNumber;
@@ -176,10 +176,7 @@ buttonResult.addEventListener('click', function(){
     firstNumber = Number(firstNumber);
     secondNumber = Number(secondNumber);
     divResult.textContent = ' = ';
-
-    if(firstNumber.toString().includes('.') || secondNumber.toString().includes('.')) 
-    divResult.textContent += Number(operate(firstNumber, operator, secondNumber)).toFixed(3);
-    else divResult.textContent += operate(firstNumber, operator, secondNumber);
+    divResult.textContent += Math.round(operate(firstNumber, operator, secondNumber) * 1000)/1000;
 });
 
 buttonFloat.addEventListener('click', function(){
@@ -294,11 +291,7 @@ body.addEventListener('keydown', (e) => {
                 firstNumber = Number(firstNumber);
                 secondNumber = Number(secondNumber);
                 divResult.textContent = ' = ';
-
-                if(firstNumber.toString().includes('.') || secondNumber.toString().includes('.')) 
-                divResult.textContent += Number(operate(firstNumber, operator, secondNumber)).toFixed(3);
-                else divResult.textContent += operate(firstNumber, operator, secondNumber);
-
+                divResult.textContent += Math.round(operate(firstNumber, operator, secondNumber) * 1000)/1000;
                 break;
             
             case '.':
