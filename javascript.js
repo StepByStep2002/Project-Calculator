@@ -5,6 +5,7 @@ let operator;
 let result;
 const display = document.getElementById('calcDisplay')
 const calcNumbers = document.getElementById('calcNumbers')
+const body = document.querySelector('body');
 
 const buttonAdd = document.getElementById('add');
 const buttonSubstract = document.getElementById('substract');
@@ -62,24 +63,27 @@ function operate(number1, operator, number2)
 
 function enterFirstNumber(number)
 {
-    
-    firstNumber += number.textContent;
-    firstNumber = firstNumber.replace('undefined', '');
-    if(firstNumber.includes('.')) firstNumber = parseFloat(firstNumber);//turns firstNumber into a float with decimal if '.' is present
-    else firstNumber = Number(firstNumber);
-    divFirstNumber.textContent = firstNumber;
-    console.log('First number: '+ firstNumber);
+    if(firstNumber == '0') firstNumber = '0';
+    else
+    {
+        firstNumber += number.textContent;
+        firstNumber = firstNumber.replace('undefined', '');
+        divFirstNumber.textContent = firstNumber;
+        console.log('First number: '+ firstNumber);
+    }
     
 }
 
 function enterSecondNumber(number)
 {
-    secondNumber += number.textContent;
-    secondNumber = secondNumber.replace('undefined', '');
-    if(secondNumber.includes('.')) secondNumber = parseFloat(secondNumber);
-    else secondNumber = Number(secondNumber);
-    divSecondNumber.textContent = secondNumber;
-    console.log('Second number: '+ secondNumber);
+    if(secondNumber == '0') secondNumber = '0';
+    else
+    {
+        secondNumber += number.textContent;
+        secondNumber = secondNumber.replace('undefined', '');
+        divSecondNumber.textContent = secondNumber;
+        console.log('Second number: '+ secondNumber);
+    }
 }
 
 function clear(){
@@ -91,16 +95,31 @@ function clear(){
     divSecondNumber.textContent = '';
     divResult.textContent = '';
 }
-//Calculates the result, assign it to the firstNumber
+
+function operatorPress(button)
+{
+    if(firstNumber)
+    {
+        divFirstNumber.textContent = firstNumber;
+        divSecondNumber.textContent = '';
+        divOperator.textContent = '  ' + button + ' ';
+        operator = button;
+    }
+}
+//Calculates the result on pressing operator, assign it to the firstNumber
 function resultOnOperator(){
     if(secondNumber){
-        firstNumber = operate(firstNumber, operator, secondNumber)
+        firstNumber = Number(firstNumber);
+        secondNumber = Number(secondNumber);
+        firstNumber = (operate(firstNumber, operator, secondNumber));
+        console.log(firstNumber);
         secondNumber = '';
         divFirstNumber.textContent = firstNumber;
         divSecondNumber.textContent = '';
+        divResult.textContent = '';
     }
 }
-for(let i = 0; i <= 9; i++)
+for(let i = 9; i >= 0; i--)
 {
     let createNumber = document.createElement('button')
     createNumber.textContent = i;
@@ -121,58 +140,46 @@ buttonAdd.addEventListener('click', () => {
     if(operator)
     {
         resultOnOperator();
-        divResult.textContent = '';
-    } 
-    divFirstNumber.textContent = firstNumber;
-    divSecondNumber.textContent = '';
-    divOperator.textContent = ' + ';
-    operator = '+';
+    }
+    operatorPress(buttonAdd.textContent)
 });
 
 buttonSubstract.addEventListener('click', () => {
      if(operator)
     {
         resultOnOperator();
-        divResult.textContent = '';
     } 
-    divFirstNumber.textContent = firstNumber;
-    divSecondNumber.textContent = '';
-    divOperator.textContent = ' - ';
-    operator = '-';
+    operatorPress(buttonSubstract.textContent)
 });
 
 buttonMultiply.addEventListener('click', () => {
       if(operator)
     {
         resultOnOperator();
-        divResult.textContent = '';
     } 
-    divFirstNumber.textContent = firstNumber;
-    divSecondNumber.textContent = '';
-    divOperator.textContent = ' * ';
-    operator = '*';
+    operatorPress(buttonMultiply.textContent)
 });
 
 buttonDivide.addEventListener('click', () => {
          if(operator)
     {
         resultOnOperator();
-        divResult.textContent = '';
     } 
-    divFirstNumber.textContent = firstNumber;
-    divSecondNumber.textContent = '';
-    divOperator.textContent = ' / ';
-    operator = '/';
+    operatorPress(buttonDivide.textContent)
 });
 
 buttonClear.addEventListener('click', clear)
 
 buttonResult.addEventListener('click', function(){
-    if(!firstNumber && !secondNumber) return alert('Enter all numbers');
+    if(!firstNumber || !secondNumber) return alert('Enter all numbers');
+
+    firstNumber = Number(firstNumber);
+    secondNumber = Number(secondNumber);
     divResult.textContent = ' = ';
-    divResult.textContent += operate(firstNumber, operator, secondNumber);
-    firstNumber = operate(firstNumber, operator, secondNumber);
-    secondNumber = '';
+
+    if(firstNumber.toString().includes('.') || secondNumber.toString().includes('.')) 
+    divResult.textContent += Number(operate(firstNumber, operator, secondNumber)).toFixed(3);
+    else divResult.textContent += operate(firstNumber, operator, secondNumber);
 });
 
 buttonFloat.addEventListener('click', function(){
@@ -180,8 +187,9 @@ buttonFloat.addEventListener('click', function(){
     {
         if(!operator)
         {   
-            if(firstNumber == '') firstNumber = '0.';
+            if(!firstNumber) firstNumber = '0.';
             else firstNumber += ".";
+            divFirstNumber.textContent = firstNumber;
             console.log(firstNumber)
         }
     } 
@@ -189,14 +197,17 @@ buttonFloat.addEventListener('click', function(){
     {   
         if(operator)
         {
-            if(secondNumber == '') secondNumber = '0.';
+            if(!secondNumber) secondNumber = '0.';
             else secondNumber += ".";
+            divSecondNumber.textContent = secondNumber;
             console.log(secondNumber)
         }
     }
+    
 });
 
 buttonBack.addEventListener('click', function(){
+    if(divResult.textContent) divResult.textContent = '';
     if(secondNumber) 
         {   
             secondNumber = secondNumber.toString().slice(0, -1);
@@ -212,5 +223,129 @@ buttonBack.addEventListener('click', function(){
             firstNumber = firstNumber.toString().slice(0, -1);
             divFirstNumber.textContent = firstNumber;
         }
-        //to implement: remove result
 });
+
+body.addEventListener('keydown', (e) => {
+    let regex = /\d/;
+    if(regex.test(e.key)) {
+        if(divResult.textContent) clear();
+        if(!operator)
+        {   
+            if(firstNumber == '0') firstNumber = '0';
+            else
+            {
+                firstNumber += e.key;
+                firstNumber = firstNumber.replace('undefined', '');
+                divFirstNumber.textContent = firstNumber;
+            }
+        }
+        else
+        {
+            if(secondNumber == '0') secondNumber = '0';
+            else
+            {
+                secondNumber += e.key;
+                secondNumber = secondNumber.replace('undefined', '');
+                divSecondNumber.textContent = secondNumber;
+            }
+        }
+    };
+
+    let specialCharacters = /[+\-\*\/=\.]/g;
+    if(firstNumber && e.key.match(specialCharacters))
+    {
+        switch(e.key)
+        {
+            case '+':
+                if(operator)
+                {
+                    resultOnOperator();
+                } 
+                operatorPress(e.key)
+                break;
+            
+            case '-':
+                if(operator)
+                {
+                    resultOnOperator();
+                } 
+                operatorPress(e.key)
+                break;
+            
+            case '/':
+                if(operator)
+                {
+                    resultOnOperator();
+                } 
+                operatorPress(e.key)
+                break;
+            
+            case '*':
+                if(operator)
+                {
+                    resultOnOperator();
+                } 
+                operatorPress(e.key)
+                break;
+            
+            case '=':
+                if(!firstNumber || !secondNumber) return alert('Enter all numbers');
+                if(firstNumber == '0.' || secondNumber == '0.') return alert('Number is entered incorrectly')
+                firstNumber = Number(firstNumber);
+                secondNumber = Number(secondNumber);
+                divResult.textContent = ' = ';
+
+                if(firstNumber.toString().includes('.') || secondNumber.toString().includes('.')) 
+                divResult.textContent += Number(operate(firstNumber, operator, secondNumber)).toFixed(3);
+                else divResult.textContent += operate(firstNumber, operator, secondNumber);
+
+                break;
+            
+            case '.':
+                if(!divFirstNumber.textContent.includes('.'))
+                {
+                    if(!operator)
+                    {   
+                        if(!firstNumber) firstNumber = '0.';
+                        else firstNumber += '.';
+                        divFirstNumber.textContent = firstNumber;
+                        console.log(firstNumber)
+                    }
+                }
+
+                if(!divSecondNumber.textContent.includes('.'))   
+                {   
+                    if(operator)
+                    {
+                        if(!secondNumber) secondNumber = '0.';
+                        else secondNumber += '.';
+                        divSecondNumber.textContent = secondNumber;
+                        console.log(secondNumber)
+                    }
+                }
+                break;
+                            
+        }
+    }
+
+    if(e.key == 'Backspace')
+    {
+        if(divResult.textContent) divResult.textContent = '';
+        else if(secondNumber) 
+        {   
+            secondNumber = secondNumber.toString().slice(0, -1);
+            divSecondNumber.textContent = secondNumber;
+        }
+        else if(!secondNumber && operator) 
+        {
+            operator = '';
+            divOperator.textContent = '';
+        }
+        else 
+        {
+            firstNumber = firstNumber.toString().slice(0, -1);
+            divFirstNumber.textContent = firstNumber;
+        }
+    }
+});
+

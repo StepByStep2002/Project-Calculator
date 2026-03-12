@@ -8,24 +8,30 @@
     <script src="javascript.js" defer></script>
 </head>
 <body>
+    <h1>Project Calculator</h1>
+    <div class="description">
+        <p>This is a final project of The Foundations course in The Odin Project curriculum.</p>
+        <p>This calculator is capable of performing basic mathematic operations, such as adding, substracting, multiplying and dividing.</p>
+        <p>Additionally, it supports decimals, has functionality to delete inputs and you can do all of mentioned operations through keyboard input.</p>
+    </div>
     <div id="calcBody">
 
         <div id="calcDisplay">
-            <div id="firstNumber"></div>
-            <div id="operator"></div>
-            <div id="secondNumber"></div>
-            <div id="showResult"></div>
+            <div class="resultDivs" id="firstNumber"></div>
+            <div class="resultDivs" id="operator"></div>
+            <div class="resultDivs" id="secondNumber"></div>
+            <div class="resultDivs" id="showResult"></div>
         </div>
 
-        <div>
+        <div id="operators">
             <button id="add">+</button>
             <button id="substract">-</button>
             <button id="multiply">*</button>
             <button id="divide">/</button>
             <button id="floatPoint">.</button>
             <button id="result">=</button>
-            <button id="clear">Clear</button>
-            <button id="backspace">Backspace</button>
+            <button id="clear">C</button>
+            <button id="backspace">CE</button>
         </div>
 
         <div id="calcNumbers"></div>
