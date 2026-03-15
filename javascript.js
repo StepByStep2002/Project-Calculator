@@ -192,7 +192,7 @@ buttonFloat.addEventListener('click', function(){
     } 
     if(!divSecondNumber.textContent.includes('.'))   
     {   
-        if(operator)
+        if(operator && !divResult.textContent)
         {
             if(!secondNumber) secondNumber = '0.';
             else secondNumber += ".";
@@ -308,7 +308,7 @@ body.addEventListener('keydown', (e) => {
 
                 if(!divSecondNumber.textContent.includes('.'))   
                 {   
-                    if(operator)
+                    if(operator && !divResult.textContent)
                     {
                         if(!secondNumber) secondNumber = '0.';
                         else secondNumber += '.';

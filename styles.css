@@ -45,6 +45,7 @@ button
     background-color: gainsboro;
     border: 1px solid gray;
     margin: 5px;
+    gap: 5px;
 
 }
 #result
