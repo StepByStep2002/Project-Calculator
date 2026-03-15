@@ -17,12 +17,19 @@ begin an input for the new operation.
 Instruction to keyboard support:
 
 0 - 9: Entering numbers.
+
 'Shift' + '=': Enter 'add' operator.
+
 '-': Enter 'substract' operator.
+
 'Shift' + '8': Enter 'multiply' operator.
+
 '/': Enter 'divide' operator.
+
 '=': Show the result of an operation.
+
 '.': Add decimals to the number.
+
 'Backspace': Delete input.
 
 
